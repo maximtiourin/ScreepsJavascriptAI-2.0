@@ -1,0 +1,39 @@
+ownedRooms = {
+   "roomName" : {},
+   ...,
+   ...,
+   ...
+}
+
+
+creeps[*] = {
+   role: "role",
+   assignedRoom: "roomName"
+}
+
+creeps[sourcer] = {
+   assignedSource: {"id": "sourceId", "sourcePoint": {"pos": {"x", "y"}}};
+}
+
+
+
+rooms[*] = {
+   spawnQueue = [
+      {"role", "bodyConfig": {"body": [BODY PARTS], "cost": cost}, "opts": {...additional_memory_properties...}}
+   ],
+   survey = {
+      primarySpawn: {"id": "spawn-id", "pos" : {"x", "y"}},
+      sources: {
+         "source-id": {"pos": {"x", "y"}},
+         ...,
+         ...,
+         ...
+      },
+      sourcePaths: {
+         "source-id": {"path": [{"x", "y"}, ..., ..., ...], "cost", "sourcePoint": {"pos": {"x", "y"}}},
+         ...,
+         ...,
+         ...
+      }
+   }
+}
