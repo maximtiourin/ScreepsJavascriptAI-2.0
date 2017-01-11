@@ -7,6 +7,12 @@ Role.getRoleObjectFromRole = function(role) {
    if (role === Role.Sourcer.ROLE) {
       return Role.Sourcer;
    }
+   else if (role === Role.Builder.ROLE) {
+      return Role.Builder;
+   }
+   else if (role === Role.Refueler.ROLE) {
+      return Role.Refueler;
+   }
 
    return {};
 }
@@ -19,3 +25,5 @@ Role.getBaseNameFromRole = function(role) {
 }
 
 require("role_sourcer");
+require("role_builder");
+require("role_refueler");

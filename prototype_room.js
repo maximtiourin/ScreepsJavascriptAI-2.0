@@ -13,6 +13,9 @@ Room.prototype.tick = function() {
    //Spawn
    FZ_.staggerOperation(MANAGE_SPAWN_QUEUE_TICKS, function() { t.manageSpawnQueue() });
    this.spawnCreeps();
+
+   //Dispatch
+   this.manageDispatching();
 }
 
 Room.prototype.init = function() {
@@ -36,3 +39,4 @@ Room.prototype.isInitialized = function() {
 
 require("prototype_room_spawn");
 require("prototype_room_survey");
+require("prototype_room_dispatch");

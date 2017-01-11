@@ -12,7 +12,8 @@ creeps[*] = {
 }
 
 creeps[sourcer] = {
-   assignedSource: {"id": "sourceId", "sourcePoint": {"pos": {"x", "y"}}};
+   assignedSource: {"id": "sourceId", "sourcePoint": {"pos": {"x", "y"}}},
+   container: "container-id"
 }
 
 
@@ -34,6 +35,11 @@ rooms[*] = {
          ...,
          ...,
          ...
+      }
+   },
+   dispatch = {
+      sourcer: {
+         specialized: false
       }
    }
 }

@@ -59,6 +59,8 @@ Room.prototype.spawnCreeps = function() {
 Room.prototype.addToSpawnQueue = function(role, bodyConfig, memoryOpts = {}) {
    let mem = this.memory;
 
+   Log.line("Queueing Creep (" + role + ") :: [c = " + bodyConfig.cost + "]", this.name);
+
    mem.spawnQueue.push({"role": role, "bodyConfig": bodyConfig, "opts": memoryOpts});
 }
 
@@ -71,8 +73,6 @@ Room.prototype.addToSpawnQueue = function(role, bodyConfig, memoryOpts = {}) {
  * and so that heavy calculations aren't done more than they are needed.
  */
 Room.prototype.manageSpawnQueue = function() { 
-   Log.line("Managing Spawn Queue", this.name);
-
    let t = this;
    let mem = this.memory;
    let controller = this.controller;

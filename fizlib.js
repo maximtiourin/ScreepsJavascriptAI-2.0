@@ -22,6 +22,8 @@ FZ_.Group.Creeps = {};
 //List
 FZ_.List = {};
 FZ_.List.Creeps = {};
+//Math
+FZ_.Math = {};
 
 /*
  * Staggers the operation to run every 'perTicks' of Game.time
@@ -179,4 +181,17 @@ FZ_.List.Creeps.assignedToRoom = function(assignedRoom, role = undefined, additi
          &&    ((role) ? (creep.memory.role === role) : (true))
          &&    ((additionalFilter) ? (additionalFilter(creep)) : (true));
    });
+}
+
+FZ_.Math.clamp = function(value, min, max) {
+   return Math.max(Math.min(value, max), min);
+}
+
+/*
+ * Takes two objects that have properties 'x' and 'y' to find the distance squared between them
+ */
+FZ_.Math.distanceSquared = function(a, b) {
+   let dx = b.x - a.x;
+   let dy = b.y - a.y;
+   return (dx * dx) + (dy * dy);
 }
