@@ -210,10 +210,10 @@ FZ_.List.refuelables = function(room, opts = undefined) {
    
    let structures = room.find(FIND_STRUCTURES, {
       filter: function(s) {
-         return (containers && s.structureType === STRUCTURE_CONTAINER)
-               || (extensions && s.structureType === STRUCTURE_EXTENSION)
-               || (spawns && s.structureType === STRUCTURE_SPAWN)
-               || (storage && s.structureType === STRUCTURE_STORAGE);
+         return (options.containers && s.structureType === STRUCTURE_CONTAINER)
+               || (options.extensions && s.structureType === STRUCTURE_EXTENSION)
+               || (options.spawns && s.structureType === STRUCTURE_SPAWN)
+               || (options.storage && s.structureType === STRUCTURE_STORAGE);
       }
    });
 

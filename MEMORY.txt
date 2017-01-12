@@ -7,13 +7,18 @@ ownedRooms = {
 
 
 creeps[*] = {
-   role: "role",
    assignedRoom: "roomName"
+   role: "role",
 }
 
 creeps[sourcer] = {
    assignedSource: {"id": "sourceId", "sourcePoint": {"pos": {"x", "y"}}},
-   container: "container-id"
+   container: "container-id",
+   needEnergy: false
+}
+
+creeps[refueler] = {
+   needEnergy: false
 }
 
 rooms[*] = {

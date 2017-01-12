@@ -10,7 +10,7 @@ Role.Sourcer = {}
 
 Role.Sourcer.tick = function(creep) {
    //Register pathfinding rules
-   creep.AI.registerPathfindingRules(Role.Sourcer.pathfindingRules);
+   creep.registerPathfindingRules(Role.Sourcer.pathfindingRules);
 
    let mem = creep.memory;
 
@@ -19,14 +19,14 @@ Role.Sourcer.tick = function(creep) {
    if (roomName) {
       let room = Game.rooms[roomName];
 
-      let roomMem = room.memory;
-
       if (room) {
+         let roomMem = room.memory;
+         
          //Get dispatch
          let specialized = room.getDispatch("sourcer", "specialized");
          if (specialized) {
-            /*Work to get some refuelers up and running*/
-            creep.AI.toggleNeedEnergy();
+            //Work to get some refuelers up and running
+            AI.toggleNeedEnergy(creep);
 
             if (mem.needEnergy) {
                //Mine energy
@@ -35,7 +35,7 @@ Role.Sourcer.tick = function(creep) {
                let source = Game.getObjectById(assignedSource.id);
 
                if (source) {
-                  this.AI.Mine.targetFromPosition(source, new RoomPosition(sourcePoint.pos.x, sourcePoint.pos.y, roomName));
+                  AI.Mine.targetFromPosition(creep, source, new RoomPosition(sourcePoint.pos.x, sourcePoint.pos.y, roomName));
                }
             }
             else {
@@ -43,12 +43,12 @@ Role.Sourcer.tick = function(creep) {
                let spawn = Game.getObjectById(roomMem.survey.primarySpawn.id);
 
                if (spawn) {
-                  this.AI.Deposit.inTarget(spawn, RESOURCE_ENERGY);
+                  AI.Deposit.inTarget(creep, spawn, RESOURCE_ENERGY);
                }
             }
          }
          else {
-            /*Go mine forever*/
+            //Go mine forever
             //Maintain container
             Role.Sourcer.maintainContainer(room, creep);
             Role.Sourcer.validateContainer(creep);
@@ -58,7 +58,7 @@ Role.Sourcer.tick = function(creep) {
             let sourcePoint = assignedSource.sourcePoint;
             let source = Game.getObjectById(assignedSource.id);
 
-            this.AI.Mine.targetFromPosition(source, new RoomPosition(sourcePoint.pos.x, sourcePoint.pos.y, roomName));
+            AI.Mine.targetFromPosition(creep, source, new RoomPosition(sourcePoint.pos.x, sourcePoint.pos.y, roomName));
          }
       } 
    }
@@ -154,4 +154,3 @@ Role.Sourcer.pathfindingRules = {
 
 Role.Sourcer.ROLE = "sourcer";
 Role.Sourcer.BASE_NAME = "S:";
-

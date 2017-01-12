@@ -8,6 +8,8 @@
  * Runs all necessary surveying functions
  */
 Room.prototype.survey = function() {
+   let t = this;
+
    let REFUELABLES_TICKS = 5; //Update refuelables
    let WITHDRAWABLES_TICKS = 5; //Update withdrawables
 
@@ -23,9 +25,9 @@ Room.prototype.survey = function() {
 
    /* Here we can do surveying stuff that should be done constantly or more than once */
    //Refuelables
-   FZ_.staggerOperation(REFUELABLES_TICKS, function() { this.surveyRefuelables() });
+   FZ_.staggerOperation(REFUELABLES_TICKS, function() { t.surveyRefuelables() });
    //Withdrawables
-   FZ_.staggerOperation(WITHDRAWABLES_TICKS, function() { this.surveyWithdrawables() });
+   FZ_.staggerOperation(WITHDRAWABLES_TICKS, function() { t.surveyWithdrawables() });
 }
 
 /*

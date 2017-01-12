@@ -56,12 +56,25 @@ Room.prototype.spawnCreeps = function() {
  * memoryOpts is an object that contains keys/values that should be stored in
  * the spawned creep's memory object
  */
-Room.prototype.addToSpawnQueue = function(role, bodyConfig, memoryOpts = {}) {
+Room.prototype.addToSpawnQueue = function(role, bodyConfig, memoryOpts = undefined) {
+   let t = this;
+
+   let options = {
+      "assignedRoom": t.name,
+      "role": role
+   }
+
+   if (memoryOpts) {
+      for (let key in memoryOpts) {
+         options[key] = memoryOpts[key];
+      }
+   }
+
    let mem = this.memory;
 
    Log.line("Queueing Creep (" + role + ") :: [c = " + bodyConfig.cost + "]", this.name);
 
-   mem.spawnQueue.push({"role": role, "bodyConfig": bodyConfig, "opts": memoryOpts});
+   mem.spawnQueue.push({"role": role, "bodyConfig": bodyConfig, "opts": options});
 }
 
 /*

@@ -11,7 +11,8 @@
 Role.Refueler = {}
 
 Role.Refueler.tick = function(creep) {
-   creep.AI.registerPathfindingRules(Role.Sourcer.pathfindingRules);
+   //Register pathfinding rules
+   creep.registerPathfindingRules(Role.Refueler.pathfindingRules);
 
    let mem = creep.memory;
 
@@ -20,10 +21,10 @@ Role.Refueler.tick = function(creep) {
    if (roomName) {
       let room = Game.rooms[roomName];
 
-      let roomMem = room.memory;
-
       if (room) {
-         creep.AI.toggleNeedEnergy();
+         let roomMem = room.memory;
+
+         AI.toggleNeedEnergy(creep);
 
          if (mem.needEnergy) {
             //Collect energy
@@ -61,10 +62,10 @@ Role.Refueler.tick = function(creep) {
 
                //Try to withdraw
                if (withdrawable instanceof Resource) {
-                  this.AI.Pickup.target(withdrawable);
+                  AI.Pickup.target(creep, withdrawable);
                }
                else if (withdrawable instanceof Structure) {
-                  this.AI.Withdraw.fromTarget(withdrawable, RESOURCE_ENERGY);
+                  AI.Withdraw.fromTarget(creep, withdrawable, RESOURCE_ENERGY);
                }
             }
          }
@@ -93,7 +94,7 @@ Role.Refueler.tick = function(creep) {
                let refuelable = sortedRefuelables[0];
 
                //Try to deposit
-               this.AI.Deposit.inTarget(refuelable, RESOURCE_ENERGY);
+               AI.Deposit.inTarget(creep, refuelable, RESOURCE_ENERGY);
             }
          }
       }

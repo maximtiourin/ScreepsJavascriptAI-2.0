@@ -6,4 +6,5 @@ require('prototype_creep');
 require('prototype_room');
 require('prototype_roomposition');
 require('prototype_structure');
+require('ai');
 require('role');

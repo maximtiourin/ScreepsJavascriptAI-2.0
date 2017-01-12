@@ -5,6 +5,8 @@ Creep.prototype.tick = function() {
 }
 
 Creep.prototype.tickRole = function() {
+   let t = this;
+
    if (!this.spawning) {
       let mem = this.memory;
 
@@ -13,7 +15,12 @@ Creep.prototype.tickRole = function() {
       if (role) {
          let objrole = Role.getRoleObjectFromRole(role);
 
-         objrole.tick(this);
+         if (objrole.tick) {
+            objrole.tick(t);
+         }
+         else {
+            Log.line(creep.name + " can not find an object role for role: " + role);
+         }
       }
    }
 }
