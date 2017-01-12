@@ -8,6 +8,9 @@
  * Runs all necessary surveying functions
  */
 Room.prototype.survey = function() {
+   let REFUELABLES_TICKS = 5; //Update refuelables
+   let WITHDRAWABLES_TICKS = 5; //Update withdrawables
+
    let mem = this.memory;
 
    if (!mem.survey) {
@@ -18,8 +21,11 @@ Room.prototype.survey = function() {
       this.surveySourcePaths();
    }
 
-   //Here we can do surveying stuff that should be done constantly or more than once
-   //TODO
+   /* Here we can do surveying stuff that should be done constantly or more than once */
+   //Refuelables
+   FZ_.staggerOperation(REFUELABLES_TICKS, function() { this.surveyRefuelables() });
+   //Withdrawables
+   FZ_.staggerOperation(WITHDRAWABLES_TICKS, function() { this.surveyWithdrawables() });
 }
 
 /*
@@ -29,7 +35,14 @@ Room.prototype.surveyInit = function() {
    let mem = this.memory;
 
    if (!mem.survey) {
-      mem.survey = {};
+      mem.survey = {
+         refuelables: {
+            list: []
+         },
+         withdrawables: {
+            list: []
+         }
+      };
    }
 }
 
@@ -48,6 +61,10 @@ Room.prototype.surveyPrimarySpawn = function() {
          mem.survey.primarySpawn = {"id": spawn.id, "pos": {"x": spawn.pos.x, "y": spawn.pos.y}};
       }
    }
+}
+
+Room.prototype.surveyRefuelables = function() {
+   this.memory.survey.refuelables.list = FZ_.List.refuelables(this);
 }
 
 /*
@@ -103,4 +120,8 @@ Room.prototype.surveySourcePaths = function() {
          mem.survey.sourcePaths[key] = {"path": storePath, "cost": pathfind.cost, "sourcePoint": {"pos": {"x": sourcePoint.x, "y": sourcePoint.y}}};
       }
    }
+}
+
+Room.prototype.surveyWithdrawables = function() {
+   this.memory.survey.withdrawables.list = FZ_.List.withdrawables(this);
 }

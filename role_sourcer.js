@@ -2,13 +2,15 @@
 
 /*
  * The sourcer is responsible for mining from a source node and dropping mined energy on top of itself.
+ * It also ensures that a container construction site is placed on top of its source point.
+ * At the beginnings of a room, will deposit energy in spawn to help spawn refuelers
  */
 
 Role.Sourcer = {}
 
 Role.Sourcer.tick = function(creep) {
    //Register pathfinding rules
-   creep.registerPathfindingRules(Role.Sourcer.pathfindingRules);
+   creep.AI.registerPathfindingRules(Role.Sourcer.pathfindingRules);
 
    let mem = creep.memory;
 
@@ -17,20 +19,46 @@ Role.Sourcer.tick = function(creep) {
    if (roomName) {
       let room = Game.rooms[roomName];
 
+      let roomMem = room.memory;
+
       if (room) {
          //Get dispatch
          let specialized = room.getDispatch("sourcer", "specialized");
          if (specialized) {
-            /*Work to get some builders and refuelers up and running*/
-            //TODO
+            /*Work to get some refuelers up and running*/
+            creep.AI.toggleNeedEnergy();
+
+            if (mem.needEnergy) {
+               //Mine energy
+               let assignedSource = mem.assignedSource;
+               let sourcePoint = assignedSource.sourcePoint;
+               let source = Game.getObjectById(assignedSource.id);
+
+               if (source) {
+                  this.AI.Mine.targetFromPosition(source, new RoomPosition(sourcePoint.pos.x, sourcePoint.pos.y, roomName));
+               }
+            }
+            else {
+               //Refuel spawn
+               let spawn = Game.getObjectById(roomMem.survey.primarySpawn.id);
+
+               if (spawn) {
+                  this.AI.Deposit.inTarget(spawn, RESOURCE_ENERGY);
+               }
+            }
          }
          else {
             /*Go mine forever*/
             //Maintain container
             Role.Sourcer.maintainContainer(room, creep);
-            let container = Role.Sourcer.validateContainer(creep);
+            Role.Sourcer.validateContainer(creep);
 
-            //TODO
+            //Mine from sourcePoint
+            let assignedSource = mem.assignedSource;
+            let sourcePoint = assignedSource.sourcePoint;
+            let source = Game.getObjectById(assignedSource.id);
+
+            this.AI.Mine.targetFromPosition(source, new RoomPosition(sourcePoint.pos.x, sourcePoint.pos.y, roomName));
          }
       } 
    }

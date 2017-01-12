@@ -17,22 +17,21 @@ Room.prototype.manageDispatching = function() {
 }
 
 /*
- * Checks to see if the proper amount of builders and refuelers are alive,
+ * Checks to see if the proper amount of refuelers are alive,
  * and manages the sourcer dispatch accordingly
  */
 Room.prototype.dispatchSourcer = function() {
    let creepsAssigned = FZ_.List.Creeps.assignedToRoom(this.name);
    let creepsByRole = FZ_.Group.Creeps.byRole(creepsAssigned);
 
-   let builders = creepsByRole[Role.Builder.ROLE];
    let refuelers = creepsByRole[Role.Refueler.ROLE];
 
-   if (builders && refuelers && builders.length >= Role.Builder.MIN_COUNT && refuelers.length >= Role.Refueler.MIN_COUNT) {
+   if (refuelers && refuelers.length >= Role.Refueler.MIN_COUNT) {
       //Dispatch sourcer to mine energy on top of its source point
       this.setDispatch("sourcer", "specialized", false);
    }
    else {
-      //Dispatch sourcer to refuel to create more builders/refuelers
+      //Dispatch sourcer to refuel to create more refuelers
       this.setDispatch("sourcer", "specialized", true);
    }
 }

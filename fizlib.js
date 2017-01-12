@@ -16,6 +16,8 @@ FZ_.GUID.Creep = {};
 //Calculate
 FZ_.Calculate = {};
 FZ_.Calculate.Creep = {};
+//Filter
+FZ_.Filter = {};
 //Group
 FZ_.Group = {};
 FZ_.Group.Creeps = {};
@@ -169,6 +171,147 @@ FZ_.Group.Creeps.byRole = function(creeps) {
          return "none";
       }
    });
+}
+
+/*
+ * Returns a list of of RefuelableEnergy objects
+
+   This list should be cached when possible for a few ticks to prevent
+   high cpu usage
+
+   RefuelableEnergy {
+      roomObject: "RoomObjectInstance-id"
+   }
+
+
+   opts describes what kind of refuelable energy objects are valid for this list
+   opts {
+      containers: true,
+      extensions: true,
+      spawns: true,
+      storage: true
+   }
+ */
+FZ_.List.refuelables = function(room, opts = undefined) {
+   let options = {
+      containers: true,
+      extensions: true,
+      spawns: true,
+      storage: true
+   }
+
+   if (opts) {
+      for (let key in opts) {
+         options[key] = opts[key];
+      }
+   }
+
+   let refuelables = [];
+   
+   let structures = room.find(FIND_STRUCTURES, {
+      filter: function(s) {
+         return (containers && s.structureType === STRUCTURE_CONTAINER)
+               || (extensions && s.structureType === STRUCTURE_EXTENSION)
+               || (spawns && s.structureType === STRUCTURE_SPAWN)
+               || (storage && s.structureType === STRUCTURE_STORAGE);
+      }
+   });
+
+   if (structures.length > 0) {
+      for (let key in structures) {
+         let structure = structures[key];
+
+         refuelables.push({roomObject: structure.id});
+      }
+   }
+
+   return refuelables;
+}
+
+/*
+ * Returns a list of of WithdrawableEnergy objects
+
+   This list should be cached when possible for a few ticks to prevent
+   high cpu usage
+
+   WithdrawableEnergy {
+      roomObject: "RoomObjectInstance-id"
+   }
+
+
+   opts describes what kind of withdrawable energy objects are valid for this list
+   opts {
+      energyOnGround: true,
+      resourceOnGround: true,
+      containers: true,
+      storage: true
+   }
+ */
+FZ_.List.withdrawables = function(room, opts = undefined) {
+   let options = {
+      energyOnGround: true,
+      resourceOnGround: true,
+      containers: true,
+      storage: true
+   }
+
+   if (opts) {
+      for (let key in opts) {
+         options[key] = opts[key];
+      }
+   }
+
+   let withdrawables = [];
+
+   if (options.energyOnGround) {
+      let energies = room.find(FIND_DROPPED_ENERGY);
+
+      if (energies.length > 0) {
+         for (let key in energies) {
+            let energy = energies[key];
+
+            withdrawables.push({roomObject: energy.id});
+         }
+      }
+   }
+
+   if (options.resourceOnGround) {
+      let resources = room.find(FIND_DROPPED_RESOURCES);
+
+      if (resources.length > 0) {
+         for (let key in resources) {
+            let resource = resources[key];
+
+            withdrawables.push({roomObject: resource.id});
+         }
+      }
+   }
+
+   if (options.containers) {
+      let containers = room.find(FIND_STRUCTURES, {
+         filter: function(structure) {
+            return structure.structureType === STRUCTURE_CONTAINER;
+         }
+      });
+
+      if (containers.length > 0) {
+         for (let key in containers) {
+            let container = containers[key];
+
+            withdrawables.push({roomObject: container.id});
+         }
+      }
+   }
+
+   if (options.storage) {
+      let storage = room.storage;
+
+      if (storage) {
+         withdrawables.push({roomObject: storage.id});
+      }
+   }
+
+   return withdrawables;
 }
 
 /*

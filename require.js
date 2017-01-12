@@ -4,4 +4,6 @@ require('fizlib');
 require('garbage_collector');
 require('prototype_creep');
 require('prototype_room');
+require('prototype_roomposition');
+require('prototype_structure');
 require('role');

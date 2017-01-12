@@ -19,15 +19,19 @@ Creep.prototype.tickRole = function() {
 }
 
 Creep.prototype.isCarryEmpty = function() {
-   return this.carryAmount == 0;
+   return this.carryAmount() == 0;
 }
 
 Creep.prototype.isCarryFull = function() {
-   return this.carryAmount = this.carryCapacity;
+   return this.carryAmount() == this.carryCapacity;
 }
 
 Creep.prototype.carryAmount = function() {
    return _.sum(this.carry);
+}
+
+Creep.prototype.carryLeftToFill = function() {
+   return this.carryCapacity - this.carryAmount();
 }
 
 require("prototype_creep_ai");

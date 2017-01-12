@@ -16,14 +16,20 @@ creeps[sourcer] = {
    container: "container-id"
 }
 
-
-
 rooms[*] = {
    spawnQueue = [
       {"role", "bodyConfig": {"body": [BODY PARTS], "cost": cost}, "opts": {...additional_memory_properties...}}
    ],
    survey = {
       primarySpawn: {"id": "spawn-id", "pos" : {"x", "y"}},
+      refuelables: {
+         list: [
+            {"roomObject": "object-id"},
+            ...,
+            ...,
+            ...
+         ]
+      },
       sources: {
          "source-id": {"pos": {"x", "y"}},
          ...,
@@ -35,6 +41,14 @@ rooms[*] = {
          ...,
          ...,
          ...
+      },
+      withdrawables: {
+         list: [
+            {"roomObject": "object-id"},
+            ...,
+            ...,
+            ...
+         ]
       }
    },
    dispatch = {
